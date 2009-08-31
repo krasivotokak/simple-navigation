@@ -87,19 +87,17 @@ describe SimpleNavigation::Item do
           before(:each) do
             @item.stub!(:selected?).and_return(true)
           end
-          it {@item.html_options(:bla)[:class].should == 'selected'}
+          it {@item.html_options(:bla)[:class].should be_include 'selected'}
         end
-      
+
         context 'with item not selected' do
           before(:each) do
             @item.stub!(:selected?).and_return(false)
           end
-          it {@item.html_options(:bla)[:class].should be_blank}
+          it {@item.html_options(:bla)[:class].should_not be_include 'selected'}
         end
       end
-    end
-    
-    describe 'id' do
+
       context 'with autogenerate_item_ids == true' do
         before(:each) do
           @item = SimpleNavigation::Item.new(:my_key, 'name', 'url', {}, nil)
@@ -107,16 +105,16 @@ describe SimpleNavigation::Item do
         end
         context 'with id defined in options' do
           before(:each) do
-            @item.html_options = {:id => 'my_id'}
+            @item.html_options = {:class => 'my_id'}
           end
-          it {@item.html_options(:bla)[:id].should == 'my_id'}
+          it {@item.html_options(:bla)[:class].should == 'my_id'}
         end
-      
+
         context 'with no id definied in options (using default id)' do
           before(:each) do
             @item.html_options = {}
           end
-          it {@item.html_options(:bla)[:id].should == 'my_key'}
+          it {@item.html_options(:bla)[:class].should == 'my_key'}
         end
       end
 

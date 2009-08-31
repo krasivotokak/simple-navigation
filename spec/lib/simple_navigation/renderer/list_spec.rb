@@ -42,7 +42,7 @@ describe SimpleNavigation::Renderer::List do
       HTML::Selector.new('ul').select(render).should have(1).entries
     end
     it "the rendered ul-tag should have the specified dom_id" do
-      HTML::Selector.new('ul#nav_dom_id').select(render).should have(1).entries
+      HTML::Selector.new('ul.nav_dom_id').select(render).should have(1).entries
     end
     it "the rendered ul-tag should have the specified class" do
       HTML::Selector.new('ul.nav_dom_class').select(render).should have(1).entries
@@ -60,7 +60,7 @@ describe SimpleNavigation::Renderer::List do
       HTML::Selector.new('li#my_id').select(render).should have(1).entries
     end
     it "should give the li the default id (stringified key) if no id is specified in the html_options" do
-      HTML::Selector.new('ul li#invoices').select(render).should have(1).entries
+      HTML::Selector.new('ul li.invoices').select(render).should have(1).entries
     end
     it "should not apply the the default id where there is an id specified in the html_options" do
       HTML::Selector.new('ul li#users').select(render).should be_empty
@@ -90,15 +90,15 @@ describe SimpleNavigation::Renderer::List do
         HTML::Selector.new('li.selected ul li').select(render(:invoices, true)).should have(2).entries
       end
       it "should be possible to identify sub items using an html selector (using ids)" do
-        HTML::Selector.new('#invoices #subnav1').select(render(:invoices, true)).should have(1).entries
+        HTML::Selector.new('.invoices .subnav1').select(render(:invoices, true)).should have(1).entries
       end
       context 'render_all_levels = false' do
         before(:each) do
           SimpleNavigation.config.render_all_levels = false
         end
         it "should not render the invoices submenu if the user-primary is active" do
-          HTML::Selector.new('#invoices #subnav1').select(render(:users, true)).should be_empty
-          HTML::Selector.new('#invoices #subnav2').select(render(:users, true)).should be_empty
+          HTML::Selector.new('.invoices .subnav1').select(render(:users, true)).should be_empty
+          HTML::Selector.new('.invoices .subnav2').select(render(:users, true)).should be_empty
         end
       end
       
@@ -107,8 +107,8 @@ describe SimpleNavigation::Renderer::List do
           SimpleNavigation.config.render_all_levels = true
         end
         it "should render the invoices submenu even if the user-primary is active" do
-          HTML::Selector.new('#invoices #subnav1').select(render(:users, true)).should have(1).entry
-          HTML::Selector.new('#invoices #subnav2').select(render(:users, true)).should have(1).entry
+          HTML::Selector.new('.invoices .subnav1').select(render(:users, true)).should have(1).entry
+          HTML::Selector.new('.invoices .subnav2').select(render(:users, true)).should have(1).entry
         end
       end
       
