@@ -27,10 +27,10 @@ module SimpleNavigation
     # It also adds the 'selected' class to the list of classes if necessary. 
     def html_options(current_navigation)
       default_class = self.autogenerate_item_ids? ? key.to_s : nil
-      options = {:class => default_class}.merge(@html_options)
-      options[:class] = [options[:class], @html_options[:class], self.selected_class(current_navigation)].flatten.compact.uniq.join(' ')
-      options.delete(:class) if options[:class].blank? 
-      options
+      @html_options
+      @html_options[:class] = [default_class, @html_options[:class], self.selected_class(current_navigation)].flatten.compact.uniq.join(' ')
+      @html_options.delete(:class) if @html_options[:class].blank? 
+      @html_options
     end
         
     def selected_class(current_navigation) #:nodoc:
