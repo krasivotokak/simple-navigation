@@ -28,38 +28,21 @@ begin
     gemspec.email = "andreas.schacke@gmail.com"
     gemspec.homepage = "http://github.com/andi/simple-navigation"
     gemspec.description = "Simple Navigation is a ruby library for creating a navigation (optionally with sub navigation) for your rails app."
-    gemspec.authors = ["Andi Schacke"]
+    gemspec.authors = ["Andi Schacke", 'Alexander Semyonov']
     gemspec.rdoc_options = ["--inline-source", "--charset=UTF-8"]
     gemspec.files += ["CHANGELOG"]
     gemspec.rubyforge_project = 'andi'
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
 begin
-  require 'rake/contrib/sshpublisher'
-  namespace :rubyforge do
-
-    desc "Release gem and RDoc documentation to RubyForge"
-    task :release => ["rubyforge:release:gem", "rubyforge:release:docs"]
-
-    namespace :release do
-      desc "Publish RDoc to RubyForge."
-      task :docs => [:rdoc] do
-        config = YAML.load(
-            File.read(File.expand_path('~/.rubyforge/user-config.yml'))
-        )
-
-        host = "#{config['username']}@rubyforge.org"
-        remote_dir = "/var/www/gforge-projects/andi/"
-        local_dir = 'rdoc'
-
-        Rake::SshDirPublisher.new(host, remote_dir, local_dir).upload
-      end
-    end
-  end
+  require 'yard'
+  YARD::Rake::YardocTask.new
 rescue LoadError
-  puts "Rake SshDirPublisher is unavailable or your rubyforge environment is not configured."
+  task :yardoc do
+    abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
+  end
 end
-
